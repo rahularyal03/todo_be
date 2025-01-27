@@ -4,14 +4,15 @@ const taskSchema = new mongoose.Schema(
   {
     title: {
       type: String,
-      required: [true, "Title is required"],
-      trim: true,
-      maxlength: [255, "Title cannot exceed 255 characters"],
     },
     description: {
       type: String,
       trim: true,
       default: "",
+    },
+
+    status: {
+      type: String,
     },
 
     priority: {

@@ -2,9 +2,16 @@ const Task = require("../models/task");
 
 exports.getAllTasks = async (req, res) => {
   try {
-    const { filter } = req.query;
+    const { status, priority } = req.query;
+    const query = {};
+    if (priority) {
+      query.priority = priority;
+    }
 
-    const tasks = await Task.find({});
+    if (status) {
+      query.status = status;
+    }
+    const tasks = await Task.find(query);
 
     res.status(200).json({ data: tasks });
   } catch (error) {
@@ -16,7 +23,7 @@ exports.getAllTasks = async (req, res) => {
 exports.createTask = async (req, res) => {
   console.log(req.body);
   try {
-    const { title, description, priority } = req.body;
+    const { title, description, priority, filter, status } = req.body;
     if (!title || !description || !priority) {
       return res.status(400).json({ message: "All fields are required" });
     }
@@ -25,6 +32,7 @@ exports.createTask = async (req, res) => {
       title,
       description,
       priority: priority || "low",
+      status,
     });
 
     const savedTask = await task.save();
